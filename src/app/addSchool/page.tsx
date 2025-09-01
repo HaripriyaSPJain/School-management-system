@@ -18,13 +18,15 @@ const schema = yup.object({
     .email('Please enter a valid email'),
   image: yup.mixed()
     .required('Image is required')
-    .test('fileSize', 'File size must be less than 5MB', (value) => {
-      if (!value) return false;
-      return value[0]?.size <= 5 * 1024 * 1024;
+    .test('fileSize', 'File size must be less than 5MB', (value: unknown) => {
+      const fileList = value as FileList;
+      if (!fileList || fileList.length === 0) return false;
+      return fileList[0].size <= 5 * 1024 * 1024;
     })
-    .test('fileType', 'Only image files are allowed', (value) => {
-      if (!value) return false;
-      return ['image/jpeg', 'image/png', 'image/gif'].includes(value[0]?.type);
+    .test('fileType', 'Only image files are allowed', (value: unknown) => {
+      const fileList = value as FileList;
+      if (!fileList || fileList.length === 0) return false;
+      return ['image/jpeg', 'image/png', 'image/gif'].includes(fileList[0].type);
     }),
   facilities: yup.string().notRequired(),
   achievements: yup.string().notRequired(),
@@ -33,7 +35,9 @@ const schema = yup.object({
   studentCount: yup.string().notRequired(),
 });
 
-type FormData = yup.InferType<typeof schema>;
+type FormData = yup.InferType<typeof schema> & {
+  image: FileList;
+};
 
 export default function AddSchool() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,7 +49,7 @@ export default function AddSchool() {
     formState: { errors },
     reset
   } = useForm<FormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data: FormData) => {
@@ -119,11 +123,10 @@ export default function AddSchool() {
         <div className="bg-white/80 backdrop-blur-sm shadow-2xl rounded-3xl p-8 sm:p-12 border border-white/20">
           {/* Success/Error Message */}
           {message && (
-            <div className={`mb-8 p-6 rounded-2xl border-2 ${
-              message.includes('Error') 
-                ? 'bg-red-50 text-red-700 border-red-200 shadow-lg' 
+            <div className={`mb-8 p-6 rounded-2xl border-2 ${message.includes('Error')
+                ? 'bg-red-50 text-red-700 border-red-200 shadow-lg'
                 : 'bg-green-50 text-green-700 border-green-200 shadow-lg'
-            }`}>
+              }`}>
               <div className="flex items-center">
                 <span className="text-2xl mr-3">
                   {message.includes('Error') ? '⚠️' : '✅'}
@@ -145,9 +148,8 @@ export default function AddSchool() {
                   {...register('name')}
                   type="text"
                   id="name"
-                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${
-                    errors.name ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
-                  }`}
+                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${errors.name ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
+                    }`}
                   placeholder="Enter school name"
                 />
                 {errors.name && (
@@ -167,9 +169,8 @@ export default function AddSchool() {
                   {...register('contact')}
                   type="tel"
                   id="contact"
-                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${
-                    errors.contact ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
-                  }`}
+                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${errors.contact ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
+                    }`}
                   placeholder="Enter 10-digit contact number"
                 />
                 {errors.contact && (
@@ -191,9 +192,8 @@ export default function AddSchool() {
                 {...register('address')}
                 id="address"
                 rows={4}
-                className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none font-semibold text-gray-800 placeholder-gray-500 ${
-                  errors.address ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
-                }`}
+                className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none font-semibold text-gray-800 placeholder-gray-500 ${errors.address ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
+                  }`}
                 placeholder="Enter complete address"
               />
               {errors.address && (
@@ -215,9 +215,8 @@ export default function AddSchool() {
                   {...register('city')}
                   type="text"
                   id="city"
-                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${
-                    errors.city ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
-                  }`}
+                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${errors.city ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
+                    }`}
                   placeholder="Enter city name"
                 />
                 {errors.city && (
@@ -237,9 +236,8 @@ export default function AddSchool() {
                   {...register('state')}
                   type="text"
                   id="state"
-                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${
-                    errors.state ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
-                  }`}
+                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${errors.state ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
+                    }`}
                   placeholder="Enter state name"
                 />
                 {errors.state && (
@@ -261,9 +259,8 @@ export default function AddSchool() {
                 {...register('email_id')}
                 type="email"
                 id="email_id"
-                className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${
-                  errors.email_id ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
-                }`}
+                className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 font-semibold text-gray-800 placeholder-gray-500 ${errors.email_id ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
+                  }`}
                 placeholder="Enter email address"
               />
               {errors.email_id && (
@@ -286,9 +283,8 @@ export default function AddSchool() {
                   type="file"
                   id="image"
                   accept="image/*"
-                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 cursor-pointer font-semibold text-gray-800 ${
-                    errors.image ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
-                  }`}
+                  className={`w-full px-4 py-4 text-lg border-2 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 cursor-pointer font-semibold text-gray-800 ${errors.image ? 'border-red-300 bg-red-50' : 'border-gray-200 hover:border-blue-300 focus:border-blue-500'
+                    }`}
                 />
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <span className="text-gray-500 text-sm font-medium">📁 Choose an image file</span>
