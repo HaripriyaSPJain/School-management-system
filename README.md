@@ -17,6 +17,9 @@ A modern, responsive web application built with Next.js for managing and explori
 
 ## 🚀 Getting Started
 
+## Demo 
+
+
 ## 📱 Pages
 
 ### 1. Home Page (`/`)
