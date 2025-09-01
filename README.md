@@ -9,7 +9,7 @@ A modern, responsive web application built with Next.js for managing and explori
 - **Image Upload**: Secure file upload with validation and preview
 - **Search & Filtering**: Advanced search and filtering capabilities
 - **E-commerce Style Layout**: Schools displayed in an attractive grid format
-### Backend (Coming Soon)
+### Backend
 - **MySQL Database**: Robust data storage with proper relationships
 - **API Routes**: RESTful API endpoints for CRUD operations
 - **File Upload**: Secure image storage in dedicated folders
@@ -64,31 +64,6 @@ CREATE TABLE schools (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
-
-## 🚀 Deployment
-### Vercel 
-1. Push code to GitHub
-2. Connect repository to Vercel
-3. Deploy automatically
-
-## 📝 Project Structure
-
-```
-school-management/
-├── src/
-│   ├── app/
-│   │   ├── addSchool/          # Add school page
-│   │   ├── showSchools/        # View schools page
-│   │   ├── api/                # API routes
-│   │   ├── components/         # Reusable components
-│   │   ├── layout.tsx          # Root layout
-│   │   └── page.tsx            # Home page
-│   └── ...
-├── public/                     # Static assets
-├── package.json                # Dependencies
-└── README.md                   # This file
-```
-
 
 ## 📄 License
 
