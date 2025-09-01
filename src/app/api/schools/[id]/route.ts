@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+type Context = {
+  params: {
+    id: string;
+  };
+};
+
+export async function DELETE(req: NextRequest, context: Context) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     await db.query('DELETE FROM schools WHERE id = ?', [id]);
     return NextResponse.json({ message: 'School deleted successfully' });
   } catch (error) {
