@@ -282,7 +282,7 @@ export default function ShowSchools() {
                         >
                           View Details →
                         </Link>
-                        <button
+                        {/* <button
                           onClick={async () => {
                             if (confirm('Are you sure you want to delete this school?')) {
                               const res = await fetch(`/api/schools/${school.id}`, { method: 'DELETE' });
@@ -297,7 +297,7 @@ export default function ShowSchools() {
                           className="bg-red-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-700 transition"
                         >
                           Delete
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
