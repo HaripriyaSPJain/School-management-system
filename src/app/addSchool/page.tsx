@@ -28,16 +28,27 @@ const schema = yup.object({
       if (!fileList || fileList.length === 0) return false;
       return ['image/jpeg', 'image/png', 'image/gif'].includes(fileList[0].type);
     }),
-  facilities: yup.string().notRequired(),
-  achievements: yup.string().notRequired(),
-  description: yup.string().notRequired(),
-  established: yup.string().notRequired(),
-  studentCount: yup.string().notRequired(),
+  facilities: yup.string().optional(),
+  achievements: yup.string().optional(),
+  description: yup.string().optional(),
+  established: yup.string().optional(),
+  studentCount: yup.string().optional(),
 });
 
-type FormData = yup.InferType<typeof schema> & {
+interface FormData {
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  contact: string;
+  email_id: string;
   image: FileList;
-};
+  facilities?: string;
+  achievements?: string;
+  description?: string;
+  established?: string;
+  studentCount?: string;
+}
 
 export default function AddSchool() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +60,7 @@ export default function AddSchool() {
     formState: { errors },
     reset
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const onSubmit = async (data: FormData) => {
@@ -93,7 +104,7 @@ export default function AddSchool() {
         reset();
       } else {
         const errorData = await response.json();
-        setMessage(`Error: ${errorData.message || 'Failed to add school'}`);
+        setMessage(`Error : ${errorData.message || 'Failed to add school'}`);
       }
     } catch (error) {
       setMessage('Error: Failed to add school');
@@ -129,14 +140,14 @@ export default function AddSchool() {
               }`}>
               <div className="flex items-center">
                 <span className="text-2xl mr-3">
-                  {message.includes('Error') ? '⚠️' : '✅'}
+                  {message.includes('Error') ? '⚠' : '✅'}
                 </span>
                 <span className="font-semibold">{message}</span>
               </div>
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-8">
             {/* School Name and Contact */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="group">
@@ -208,7 +219,7 @@ export default function AddSchool() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="group">
                 <label htmlFor="city" className="block text-lg font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
-                  <span className="mr-2">🏙️</span>
+                  <span className="mr-2">🏙</span>
                   City *
                 </label>
                 <input
@@ -229,7 +240,7 @@ export default function AddSchool() {
 
               <div className="group">
                 <label htmlFor="state" className="block text-lg font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
-                  <span className="mr-2">🗺️</span>
+                  <span className="mr-2">🗺</span>
                   State *
                 </label>
                 <input
@@ -252,7 +263,7 @@ export default function AddSchool() {
             {/* Email */}
             <div className="group">
               <label htmlFor="email_id" className="block text-lg font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
-                <span className="mr-2">✉️</span>
+                <span className="mr-2">✉</span>
                 Email ID *
               </label>
               <input
@@ -274,7 +285,7 @@ export default function AddSchool() {
             {/* Image Upload */}
             <div className="group">
               <label htmlFor="image" className="block text-lg font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
-                <span className="mr-2">🖼️</span>
+                <span className="mr-2">🖼</span>
                 School Image *
               </label>
               <div className="relative">
@@ -298,7 +309,7 @@ export default function AddSchool() {
               )}
               <div className="mt-3 p-4 bg-blue-50 rounded-xl border border-blue-200">
                 <p className="text-blue-800 text-sm font-bold">
-                  <span className="mr-2">ℹ️</span>
+                  <span className="mr-2">ℹ</span>
                   Accepted formats: JPEG, PNG, GIF. Maximum size: 5MB
                 </p>
               </div>
