@@ -73,7 +73,7 @@ export default function SchoolDetails() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-24 h-24 bg-red-100 rounded-full mb-6">
-            <span className="text-6xl">⚠️</span>
+            <span className="text-6xl">⚠</span>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Oops! Something went wrong</h2>
           <p className="text-gray-600 mb-8 text-lg">{error || 'School not found'}</p>
@@ -146,14 +146,14 @@ export default function SchoolDetails() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">🏙️</span>
+                  <span className="text-2xl">🏙</span>
                   <div>
                     <p className="font-bold text-gray-900">City</p>
                     <p className="text-gray-600">{school.city}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">🗺️</span>
+                  <span className="text-2xl">🗺</span>
                   <div>
                     <p className="font-bold text-gray-900">State</p>
                     <p className="text-gray-600">{school.state}</p>
@@ -167,7 +167,7 @@ export default function SchoolDetails() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">✉️</span>
+                  <span className="text-2xl">✉</span>
                   <div>
                     <p className="font-bold text-gray-900">Email</p>
                     <p className="text-gray-600">{school.email_id}</p>
@@ -203,7 +203,7 @@ export default function SchoolDetails() {
         {/* Facilities Section */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20 mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-            <span className="mr-3">🏗️</span>
+            <span className="mr-3">🏗</span>
             Facilities & Infrastructure
           </h2>
           {/*
@@ -215,7 +215,7 @@ export default function SchoolDetails() {
               : (school.facilities ? JSON.parse(school.facilities) : []);
             return (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {facilities.map((facility, index) => (
+                {facilities.map((facility: string, index: number) => (
                   <div key={index} className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 border border-blue-100">
                     <div className="flex items-center space-x-3">
                       <span className="text-2xl">✅</span>
@@ -240,10 +240,10 @@ export default function SchoolDetails() {
               : (school.achievements ? JSON.parse(school.achievements) : []);
             return (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {achievements.map((achievement, index) => (
+                {achievements.map((achievement: string, index: number) => (
                   <div key={index} className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-100">
                     <div className="flex items-center space-x-3">
-                      <span className="text-2xl">🎖️</span>
+                      <span className="text-2xl">🎖</span>
                       <span className="font-semibold text-gray-800">{achievement}</span>
                     </div>
                   </div>
